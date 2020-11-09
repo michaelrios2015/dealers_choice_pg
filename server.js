@@ -17,7 +17,7 @@ app.get('/', async(req, res, next)=> {
                     <link rel='stylesheet' href='/assets/styles.css' />
                 </head>
                 <body>
-                    <h1>TITLE</h1>
+                    <h1>TITLssE</h1>
                     <h2>Brands</h2>
                     <ul>
                     ${
@@ -42,10 +42,8 @@ app.get('/', async(req, res, next)=> {
 
 });
 
+
 const port = process.env.PORT || 3000;
-
-
-
 
 const setUp = async()=>{
     try{
