@@ -9,23 +9,57 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.get('/', async(req, res, next)=> {
 
     try{
-        const response = await client.query('SELECT * FROM "Brand";');     
-        const brands = response.rows;
+        const response = await client.query('SELECT * FROM "Continent";');     
+        const continents = response.rows;
         res.send(`
             <html>
                 <head>
                     <link rel='stylesheet' href='/assets/styles.css' />
                 </head>
                 <body>
-                    <h1>TITLssE</h1>
-                    <h2>Brands</h2>
+                    <h1>Places my mom has been :)</h1>
+                    <h2>Continents</h2>
                     <ul>
                     ${
-                        brands.map( brand => `
+                        continents.map( continent => `
                         <li>
-                            <a href='/brands/${brand.id}'>
-                           ${ brand.name }
+                            <a href='/brands/${continent.id}'>
+                           ${ continent.name }
                            </a>
+                        </li>    
+                        `).join(' ')
+                    }
+                    </ul>
+                </body>
+            </html>
+        
+        `);
+    }
+    catch(ex){
+        next(ex);
+    }
+
+});
+
+app.get('/brands/:id', async(req, res, next)=> {
+
+    try{
+        //const brand = await client.query('SELECT * FROM "Brand" WHERE id=$1;', [req.params.id]);
+        const response = await client.query('SELECT *, "Continent".name AS cname FROM "Continent" JOIN "Countries" ON "Continent".id = "Countries".continent_id Where "Continent".id = $1;', [req.params.id]);     
+        const countries = response.rows;
+        res.send(`
+            <html>
+                <head>
+                    <link rel='stylesheet' href='/assets/styles.css' />
+                </head>
+                <body>
+                    <h1><a href='/'>Places my mom has been :)</a></h1>
+                    <h2>${countries[0].cname}</h2>
+                    <ul>
+                    ${
+                        countries.map( countrie => `
+                        <li>
+                           ${ countrie.name }
                         </li>    
                         `).join(' ')
                     }
@@ -41,6 +75,8 @@ app.get('/', async(req, res, next)=> {
     
 
 });
+
+
 
 
 const port = process.env.PORT || 3000;
