@@ -1,6 +1,6 @@
 const pg = require('pg');
 
-const client = new pg.Client('postges://postgres:JerryPine@localhost/travels')
+const client = new pg.Client(process.env.DATABASE_URL || 'postges://postgres:JerryPine@localhost/travels')
 
 const syncAndSeed = async() => {
 
